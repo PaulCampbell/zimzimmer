@@ -1,3 +1,9 @@
 .DS_Store
 site/scripts/
-site/voices
+site/voices/
+site/browser/node_modules
+site/.Python
+site/bin/
+site/lib/
+site/include/
+
