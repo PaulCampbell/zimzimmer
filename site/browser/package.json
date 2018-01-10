@@ -1,0 +1,49 @@
+{
+  "name": "browser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify getVoices.jsx -o ../scripts/getVoices.js --extension .jsx -t babelify"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "httpism": "^3.8.0",
+    "hyperdom": "^0.10.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-do-expressions": "^6.22.0",
+    "babel-plugin-transform-react-jsx-source": "^6.22.0",
+    "babel-preset-es2015-ie": "^6.7.0",
+    "babel-preset-hyperdom": "^1.4.0",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^15.0.0"
+  },
+  "babel": {
+    "env": {
+      "development": {
+        "presets": [
+          "es2015-ie",
+          "react"
+        ],
+        "plugins": [
+          "babel-plugin-transform-do-expressions",
+          "transform-react-jsx-source"
+        ]
+      },
+      "production": {
+        "presets": [
+          "es2015-ie",
+          "react"
+        ],
+        "plugins": [
+          "transform-do-expressions"
+        ]
+      }
+    }
+  }
+}
