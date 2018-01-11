@@ -12,6 +12,7 @@ import tensorflow as tf
 # 4) spectral_contrast: Spectral contrast of the waveform
 # 5) tonnetz: Tonal centroid features of the waveform
 # 6) tuning: pitch/tuning of the waveform
+
 def extract_feature(file_name):
     X, sample_rate = librosa.load(file_name)
     stft = np.abs(librosa.stft(X))
@@ -29,8 +30,6 @@ def parse_audio_files(parent_dir,sub_dirs,file_ext='*.wav'):
         for fn in glob.glob(os.path.join(parent_dir, sub_dir, file_ext)):
             mfccs, chroma, mel, contrast,tonnetz, tuning = extract_feature(fn)
             ext_features = np.hstack([mel,contrast, tuning])
-            # ext_features = np.hstack([mfccs,mel,contrast,tonnetz, tuning])
-            # print len(ext_features)
             features = np.vstack([features, ext_features])
             labels = np.append(labels, fn.split('/')[2].split('-')[1][:1])
     return np.array(features), np.array(labels, dtype = np.int)
