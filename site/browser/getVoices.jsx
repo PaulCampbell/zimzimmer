@@ -31,14 +31,14 @@ class App {
         data: [],
       },
       {
-        sentence: 'Paul is awesome',
-        hint: 'This one is important. Make sure you sound like you mean it',
+        sentence: 'I saw Susie sitting in a shoe shine shop. Where she sits she shines, and where she shines she sits.',
+        hint: 'Almost there...',
         fileName: '5',
         data: [],
       },
       {
-        sentence: 'Something something something else',
-        hint: "Ok, last one. Say whatever you want",
+        sentence: "Isn't linear algebra fun? I'm having a great time",
+        hint: "Ok, last one.",
         fileName: '6',
         data: [],
       },
@@ -53,7 +53,7 @@ class App {
     if(this.context) {
       this.context.close()
     }
-    if(this.activeSentence + 1 < this.sentences.length) {
+    if(this.activeSentence < this.sentences.length) {
       this.activeSentence = this.activeSentence + 1
     } else {
       console.log(this.sentences)
@@ -101,18 +101,20 @@ class App {
   }
 
   render() {
-    return <div>
+    return <section class="section">
+      <div class="container">
       { this.showThanks ?
         <div>Thanks</div> :
         <div>
-          <h1>I need your voice</h1>
+          <h1 class="title">I need your voice</h1>
           <p>
             Now then. Gonna need some data to train this thing up. There are some sentences below.
             Hit the record button and say those sentences. When you're done, hit done.
           </p>
-          { this.sentences.length > this.activeSentence + 1 ?
+          { this.sentences.length > this.activeSentence ?
           <div>
             <p class="sentence">{this.sentences[this.activeSentence].sentence}</p>
+            <div class="hint">{this.sentences[this.activeSentence].hint}</div>
             <div>
               {
                 this.recording ?
@@ -120,7 +122,6 @@ class App {
                   <a class="button" onclick={()=>this.recordVoice()}>Record</a>
               }
             </div>
-            <div class="hint">{this.sentences[this.activeSentence].hint}</div>
           </div> :
           <div>
             Cool. We're done. Just need your name, and then you can send this stuff to me
@@ -130,13 +131,14 @@ class App {
             </div>
             <div>
               { this.error }
-              <a onclick={() => this.sendTheData() }>Send the data</a>
+              <a class="button" onclick={() => this.sendTheData() }>Send the data</a>
             </div>
           </div>
         }
       </div>
         }
-    </div>
+      </div>
+    </section>
   }
 }
 
