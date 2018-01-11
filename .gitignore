@@ -6,4 +6,8 @@ site/.Python
 site/bin/
 site/lib/
 site/include/
-
+tensorflow/.Python
+tensorflow/bin/
+tensorflow/lib/
+tensorflow/include/
+*.pyc

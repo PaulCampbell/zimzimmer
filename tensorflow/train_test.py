@@ -1,10 +1,10 @@
 import numpy as np
 import tensorflow as tf
-import voice_feature_extraction
+from voice_feature_extraction import *
 
 # prepare the training and test data
 parent_dir = 'voices'
-tr_sub_dirs = ['training']
+tr_sub_dirs = ['train']
 ts_sub_dirs = ['test']
 tr_features, tr_labels = parse_audio_files(parent_dir,tr_sub_dirs)
 ts_features, ts_labels = parse_audio_files(parent_dir,ts_sub_dirs)
@@ -16,7 +16,7 @@ ts_labels = one_hot_encode(ts_labels)
 # Neural net config
 training_epochs = 5000
 n_dim = tr_features.shape[1]
-n_classes = 10 # number of people
+n_classes = 4 # number of people
 n_hidden_units_one = 280
 n_hidden_units_two = 300
 sd = 1 / np.sqrt(n_dim)
@@ -66,6 +66,8 @@ with tf.Session() as sess:
 
     y_pred = sess.run(tf.argmax(y_,1),feed_dict={X: ts_features})
     y_true = sess.run(tf.argmax(ts_labels,1))
-    print('Test accuracy: ',round(session.run(accuracy, feed_dict={X: ts_features, Y: ts_labels}) , 3))
+    print(y_pred)
+    print(y_true)
+    print('Test accuracy: ',round(sess.run(accuracy, feed_dict={X: ts_features, Y: ts_labels}) , 3))
 
 
