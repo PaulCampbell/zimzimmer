@@ -1,6 +1,11 @@
 import numpy as np
 import tensorflow as tf
 from voice_feature_extraction import *
+from tensorflow.python.training import saver as tf_saver
+from tensorflow.contrib.session_bundle import exporter
+import tfdeploy as td
+
+td.setup(tf)
 
 # prepare the training and test data
 parent_dir = 'voices'
@@ -25,7 +30,7 @@ learning_rate = 0.01
 
 # Define placeholders for features and class labels
 # Tensorflow is gonna fill these things with data
-X = tf.placeholder(tf.float32,[None,n_dim])
+X = tf.placeholder(tf.float32,[None,n_dim], name="input")
 Y = tf.placeholder(tf.float32,[None,n_classes])
 
 # Hidden layers
@@ -44,7 +49,7 @@ h_2 = tf.nn.sigmoid(tf.matmul(h_1,W_2) + b_2)
 W = tf.Variable(tf.random_normal([n_hidden_units_two,n_classes], mean = 0, stddev=sd))
 b = tf.Variable(tf.random_normal([n_classes], mean = 0, stddev=sd))
 y_ = tf.nn.softmax(tf.matmul(h_2,W) + b)
-y = tf.argmax(y_,1)
+y = tf.argmax(y_,1, name="output")
 
 init = tf.global_variables_initializer()
 
@@ -53,21 +58,15 @@ init = tf.global_variables_initializer()
 cost_function = -tf.reduce_sum(Y * tf.log(y_))
 optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost_function)
 
-correct_prediction = tf.equal(y, tf.argmax(Y,1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-
-
 cost_history = np.empty(shape=[1],dtype=float)
-y_true, y_pred = None, None
+
 with tf.Session() as sess:
     sess.run(init)
     for epoch in range(training_epochs):
         _,cost = sess.run([optimizer,cost_function],feed_dict={X:tr_features,Y:tr_labels})
         cost_history = np.append(cost_history,cost)
 
-    y_pred = sess.run(y, feed_dict={X: ts_features})
-    y_true = sess.run(tf.argmax(ts_labels,1))
-    print(y_pred)
-    print(y_true)
-    print('Test accuracy: ', round(sess.run(accuracy, feed_dict={X: ts_features, Y: ts_labels}) , 3))
+    model = td.Model()
+    model.add(y, sess)
+    model.save("model.pkl")
 

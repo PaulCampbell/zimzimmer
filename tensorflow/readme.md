@@ -19,6 +19,23 @@ source bin/activate
 ```
 
 
+train and test a model:
+
+```
+python train_test.py
+[3 2 0 1]
+[3 2 0 1]
+('Test accuracy: ', 1.0)
+```
+
+export a model
+
+```
+python train_and_export.py
+```
+
+This will create a model.pkl file... move this across to the site directory before starting up the website
+
 TODO:
 
 [ ] Labels should be names not ints...

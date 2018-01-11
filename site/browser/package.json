@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify getVoices.jsx -o ../scripts/getVoices.js --extension .jsx -t babelify"
+    "build": "browserify getVoices.jsx -o ../scripts/getVoices.js --extension .jsx -t babelify && browserify predict.jsx -o ../scripts/predict.js --extension .jsx -t babelify"
   },
   "author": "",
   "license": "ISC",
