@@ -10,6 +10,9 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 def send_js(path):
     return send_from_directory('scripts', path)
 
+@app.route('/assets/<path:path>')
+def send_asset(path):
+    return send_from_directory('assets', path)
 
 @app.route('/get_voice')
 def get_voices():

@@ -89,27 +89,41 @@ class App {
       }
       this.dataSending = true
       this.error = ''
-      httpism.post('/voices', {
+      return httpism.post('/voices', {
         sampleRate: this.sampleRate,
         name: this.name,
         sentences: this.sentences.map(s => {
           return {data: s.data, fileName: s.fileName}
         })
+      }).then(() => {
+        this.dataSending = false
+        this.showThanks = true
       })
-      this.showThanks = true
     }
   }
 
   render() {
     return <section class="section">
       <div class="container">
-      { this.showThanks ?
+      { this.dataSending ?
+        <div>
+          <div style="width: 50%; margin: 0 auto;">
+            <h1 class="title">Sending</h1>
+            <img src="assets/loading.gif" alt="loading" />
+          </div>
+        </div> :
+        <div>
+        { this.showThanks ?
         <div>Thanks</div> :
         <div>
-          <h1 class="title">I need your voice</h1>
+          <h1 class="title">Tensorflow for voice identification</h1>
+          <p>Like what your bank does, but presumably a lot shittier</p>
+        <br />
+          <h2 class="subtitle">I need your voice</h2>
           <p>
             Now then. Gonna need some data to train this thing up. There are some sentences below.
-            Hit the record button and say those sentences. When you're done, hit done.
+            Hit the record button and say the sentence. When you're done, hit done. Then do the next one.
+            There's about 6 to get through.
           </p>
           { this.sentences.length > this.activeSentence ?
           <div>
@@ -137,6 +151,8 @@ class App {
         }
       </div>
         }
+        </div>
+      }
       </div>
     </section>
   }
